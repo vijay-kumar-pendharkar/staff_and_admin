@@ -1,0 +1,24 @@
+name: Deploy to cPanel via FTP
+
+on:
+  push:
+    branches:
+      - main  # or master or any branch you want to auto-deploy from
+
+jobs:
+  ftp-deploy:
+    name: Upload via FTP
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: FTP Deploy
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: ${{ secrets.CPANEL_FTP_HOST }}
+        username: ${{ secrets.CPANEL_FTP_USERNAME }}
+        password: ${{ secrets.CPANEL_FTP_PASSWORD }}
+        server-dir: /public_html/  # Change this to your target directory
+        local-dir: ./              # Set the local directory (root of repo)
